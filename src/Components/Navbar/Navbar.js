@@ -22,6 +22,7 @@ import Buyers from '../Buyers/buyers';
 import Sellers from '../Sellers/sellers';
 import Cookies from 'js-cookie';
 import jwt_decode from "jwt-decode";
+import BookingProduct from '../BookingProduct/BookingProduct';
 
 function ScrollTop(props) {
   
@@ -92,11 +93,7 @@ export default function BackToTop(props) {
                 }}>
                 <ListItemText primary="Dashboard"/>        
               </ListItem>
-                    <ListItem button  onClick={() => {
-                  navigate("/shopping");
-                }}>
-                <ListItemText primary="Shopping"/>        
-              </ListItem>
+                    
               <ListItem button  onClick={() => {
                   navigate("/checkout");
                 }}>
@@ -118,7 +115,13 @@ export default function BackToTop(props) {
               </ListItem>
               </>
               }
-          
+            {data.userRole=="Seller"&&<>
+            <ListItem button  onClick={() => {
+                  navigate("/shopping");
+                }}>
+                <ListItemText primary="Shopping"/>        
+              </ListItem>
+            </>}         
             </List>
         </List>
         </Toolbar>
@@ -126,7 +129,7 @@ export default function BackToTop(props) {
       <Toolbar id="back-to-top-anchor" />
       <Container>
         <Box sx={{ my: 2 }}>
-        {props.checkout && <Checkout/>}
+        {props.checkout && <BookingProduct/>}
         {props.shopping && <Shopping/>}
         {props.dashboard && <DashBoard/>}
 

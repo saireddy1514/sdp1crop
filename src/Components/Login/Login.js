@@ -25,12 +25,15 @@ function Login() {
       if(response.status=200){
         setCookie('token', response.data.token, { path: '/' });
         if(response.data.role=="Farmer"){
-        navigate('/shopping')  
+        navigate('/checkout')  
         }
         else if(response.data.role=="Admin"){
           navigate('/sellers')  
           }
-      }
+        else if(response.data.role=="Seller"){
+          navigate('/shopping')
+        }
+        }
       else{
         seterrmsg(response.message);
 

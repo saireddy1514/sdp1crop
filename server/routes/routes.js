@@ -2,6 +2,7 @@ const { response } = require('express');
 const express = require('express');
 const router = express.Router()
 const signuptemp=require("../models/signupmodel")
+const productsignuptemp = require("../models/bookingproduct");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
@@ -22,16 +23,37 @@ router.post('/register',async (req,res)=>{
     })
 });
 
+router.post('/productregister',async (req,res)=>{
+  // console.log(req.body);
+  const productsignup = new productsignuptemp(req.body);
+  productsignup.save()
+  .then(data=>{
+      res.json(data);
+  })
+  .catch(e=>{
+      res.json(e);
+  })
+});
+
+router.get('/products',async (req,res)=>{
+  productsignuptemp.find()
+  .then((product)=>{
+      res.send(product);
+  })
+  .catch((err)=>{
+    res.status(400).send({
+      message: "Passwords does not match",
+      err,
+    });
+  })
+})
+
 router.post('/login',async (req,res)=>{
     signuptemp.findOne({ email: req.body.email })
-    // if email exists
     .then((user) => {
-      // compare the password entered and the hashed password found
       bcrypt
         .compare(req.body.password, user.password)
-        // if the passwords match
         .then((passwordCheck) => {
-          // check if password matches
           if(!passwordCheck) {
             return res.status(400).send({
               message: "Passwords does not match",
@@ -49,7 +71,6 @@ router.post('/login',async (req,res)=>{
             { expiresIn: "24h" }
           );
 
-          //   return success response
           res.status(200).send({
             message: "Login Successful",
             email: user.email,
@@ -57,7 +78,6 @@ router.post('/login',async (req,res)=>{
             token,
           });
         })
-        // catch error if password does not match
         .catch((error) => {
           res.status(400).send({
             message: "Passwords does not match",
@@ -65,7 +85,6 @@ router.post('/login',async (req,res)=>{
           });
         });
     })
-    // catch error if email does not exist
     .catch((e) => {
       res.status(404).send({
         message: "Email not found",

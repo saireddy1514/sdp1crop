@@ -2,7 +2,7 @@ POST http://localhost:2000/api/register
 Content-Type: application/json
 
 {
-    "fullname":"balaji",
-    "email":"balu@gmail.com",
-    "password":"balu"
+    "fullname":"saibalaji",
+    "email":"saibalaji@gmail.com",
+    "password":"saibalaji"
 }
